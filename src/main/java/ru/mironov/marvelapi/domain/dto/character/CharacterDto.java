@@ -6,9 +6,6 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorDto;
-import ru.mironov.marvelapi.domain.dto.event.EventDto;
-import ru.mironov.marvelapi.domain.dto.series.SeriesDto;
-import ru.mironov.marvelapi.domain.dto.story.StoryDto;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -26,8 +23,4 @@ public class CharacterDto {
     String name;
     String description;
     ComicDto comicDto;
-    CreatorDto creatorDto;
-    EventDto eventDto;
-    SeriesDto seriesDto;
-    StoryDto storyDto;
 }

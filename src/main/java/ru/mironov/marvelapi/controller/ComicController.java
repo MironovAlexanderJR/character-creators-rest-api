@@ -60,7 +60,7 @@ public class ComicController {
     }
 
     @DeleteMapping("/{comicId}/characters/{characterId}")
-    public void deleteComic(@PathVariable Long comicId, @PathVariable Long characterId) {
+    public void deleteCharacter(@PathVariable Long comicId, @PathVariable Long characterId) {
 
     }
 }

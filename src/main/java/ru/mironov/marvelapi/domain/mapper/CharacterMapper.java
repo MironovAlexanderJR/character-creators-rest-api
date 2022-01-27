@@ -28,17 +28,11 @@ public interface CharacterMapper {
 
     @Mapping(target = "comicDto", ignore = true)
     @Mapping(target = "creatorDto", ignore = true)
-    @Mapping(target = "eventDto", ignore = true)
-    @Mapping(target = "seriesDto", ignore = true)
-    @Mapping(target = "storyDto", ignore = true)
     CharacterDto toDto(Character source);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comicId", ignore = true)
     @Mapping(target = "creatorId", ignore = true)
-    @Mapping(target = "eventId", ignore = true)
-    @Mapping(target = "seriesId", ignore = true)
-    @Mapping(target = "storyId", ignore = true)
     CharacterInfoDto toInfoDto(Character source);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
