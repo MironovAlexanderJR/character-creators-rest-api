@@ -7,6 +7,10 @@ import ru.mironov.marvelapi.domain.dto.creator.CreatorDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorInfoDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorUpdateDto;
 
+/**
+ * @author mironovAlexanderJR
+ * @since 27.01.2022
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "creators")

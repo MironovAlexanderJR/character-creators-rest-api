@@ -7,6 +7,10 @@ import ru.mironov.marvelapi.domain.dto.story.StoryDto;
 import ru.mironov.marvelapi.domain.dto.story.StoryInfoDto;
 import ru.mironov.marvelapi.domain.dto.story.StoryUpdateDto;
 
+/**
+ * @author mironovAlexanderJR
+ * @since 27.01.2022
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "stories")

@@ -2,3 +2,18 @@ server:
   servlet:
     context-path: /api/v1.0
   port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/vc
+    username: miron
+    password: miron
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

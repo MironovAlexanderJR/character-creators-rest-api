@@ -7,6 +7,10 @@ import ru.mironov.marvelapi.domain.dto.event.EventDto;
 import ru.mironov.marvelapi.domain.dto.event.EventInfoDto;
 import ru.mironov.marvelapi.domain.dto.event.EventUpdateDto;
 
+/**
+ * @author mironovAlexanderJR
+ * @since 27.01.2022
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "events")

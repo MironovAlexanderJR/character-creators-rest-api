@@ -7,6 +7,10 @@ import ru.mironov.marvelapi.domain.dto.series.SeriesDto;
 import ru.mironov.marvelapi.domain.dto.series.SeriesInfoDto;
 import ru.mironov.marvelapi.domain.dto.series.SeriesUpdateDto;
 
+/**
+ * @author mironovAlexanderJR
+ * @since 27.01.2022
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "series")

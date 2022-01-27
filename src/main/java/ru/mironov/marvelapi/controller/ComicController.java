@@ -10,6 +10,10 @@ import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicInfoDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
 
+/**
+ * @author mironovAlexanderJR
+ * @since 27.01.2022
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "comics")
