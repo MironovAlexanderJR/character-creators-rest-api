@@ -19,5 +19,4 @@ public class CharacterInfoDto {
     Long id;
     String name;
     String description;
-    Long comicId;
 }

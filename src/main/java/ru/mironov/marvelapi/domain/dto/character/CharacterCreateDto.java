@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-import ru.mironov.marvelapi.domain.dto.comic.ComicCreateDto;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -19,5 +18,4 @@ import static lombok.AccessLevel.PRIVATE;
 public class CharacterCreateDto {
     String name;
     String description;
-    ComicCreateDto comicCreateDto;
 }

@@ -2,13 +2,14 @@ package ru.mironov.marvelapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
-import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
-import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicCreateDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicInfoDto;
 import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
+import ru.mironov.marvelapi.domain.mapper.ComicMapper;
+import ru.mironov.marvelapi.service.ComicService;
+
+import java.util.Optional;
 
 /**
  * @author mironovAlexanderJR
@@ -18,49 +19,45 @@ import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
 @RequiredArgsConstructor
 @RequestMapping(path = "comics")
 public class ComicController {
+    private final ComicService comicService;
+    private final ComicMapper comicMapper;
+
     @GetMapping("/{comicId}")
     public ComicDto getComic(@PathVariable Long comicId) {
-        return null;
+        return Optional.of(comicId)
+                .map(comicService::getComic)
+                .map(comicMapper::toDto)
+                .orElseThrow();
     }
 
     @GetMapping("/info/{comicId}")
     public ComicInfoDto getCharacterInfo(@PathVariable Long comicId) {
-        return null;
+        return Optional.of(comicId)
+                .map(comicService::getComic)
+                .map(comicMapper::toInfoDto)
+                .orElseThrow();
     }
 
     @PostMapping
     public ComicDto createComic(@RequestBody ComicCreateDto createDto) {
-        return null;
+        return Optional.ofNullable(createDto)
+                .map(comicMapper::fromCreateDto)
+                .map(comicService::createComic)
+                .map(comicMapper::toDto)
+                .orElseThrow();
     }
 
     @PatchMapping("/{comicId}")
     public ComicDto updateComic(@PathVariable Long comicId, @RequestBody ComicUpdateDto updateDto) {
-        return null;
+        return Optional.ofNullable(updateDto)
+                .map(comicMapper::fromUpdateDto)
+                .map(toUpdate -> comicService.updateComic(comicId, toUpdate))
+                .map(comicMapper::toDto)
+                .orElseThrow();
     }
 
     @DeleteMapping("{comicId}")
     public void deleteComic(@PathVariable Long comicId) {
-
-    }
-
-    @GetMapping("/{comicId}/characters/{characterId}")
-    public CharacterDto getCharacter(@PathVariable Long comicId, @PathVariable Long characterId) {
-        return null;
-    }
-
-    @PostMapping("/{comicId}/characters")
-    public CharacterDto assignCharacter(@PathVariable Long comicId, @RequestBody CharacterCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{comicId}/characters/{characterId}")
-    public CharacterDto updateCharacter(@PathVariable Long comicId, @PathVariable Long characterId,
-                                @RequestBody CharacterUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{comicId}/characters/{characterId}")
-    public void deleteCharacter(@PathVariable Long comicId, @PathVariable Long characterId) {
-
+        comicService.deleteComic(comicId);
     }
 }

@@ -13,5 +13,5 @@ public interface CharacterService {
 
     Character updateCharacter(Long characterId, Character characterJson);
 
-    void delete(Long characterId);
+    void deleteCharacter(Long characterId);
 }

@@ -19,20 +19,12 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper
 public interface CharacterMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "comic", ignore = true)
     Character fromCreateDto(CharacterCreateDto source);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "comic", ignore = true)
     Character fromUpdateDto(CharacterUpdateDto source);
 
-    @Mapping(target = "comicDto", ignore = true)
-    @Mapping(target = "creatorDto", ignore = true)
     CharacterDto toDto(Character source);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "comicId", ignore = true)
-    @Mapping(target = "creatorId", ignore = true)
     CharacterInfoDto toInfoDto(Character source);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

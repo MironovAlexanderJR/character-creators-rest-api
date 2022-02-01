@@ -6,9 +6,6 @@ import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterInfoDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
-import ru.mironov.marvelapi.domain.dto.comic.ComicCreateDto;
-import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
-import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
 import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
 import ru.mironov.marvelapi.service.CharacterService;
 
@@ -35,7 +32,10 @@ public class CharacterController {
 
     @GetMapping("/info/{characterId}")
     public CharacterInfoDto getCharacterInfo(@PathVariable Long characterId) {
-        return null;
+        return Optional.of(characterId)
+                .map(characterService::getCharacter)
+                .map(characterMapper::toInfoDto)
+                .orElseThrow();
     }
 
     @PostMapping
@@ -49,32 +49,10 @@ public class CharacterController {
 
     @PatchMapping("/{characterId}")
     public CharacterDto updateCharacter(@PathVariable Long characterId, @RequestBody CharacterUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("{characterId}")
-    public void deleteCharacter(@PathVariable Long characterId) {
-
-    }
-
-    @GetMapping("/{characterId}/comics/{comicId}")
-    public ComicDto getComic(@PathVariable Long characterId, @PathVariable Long comicId) {
-        return null;
-    }
-
-    @PostMapping("/{characterId}/comics")
-    public ComicDto assignComic(@PathVariable Long characterId, @RequestBody ComicCreateDto createDto) {
-        return null;
-    }
-
-    @PatchMapping("/{characterId}/comics/{comicId}")
-    public ComicDto updateComic(@PathVariable Long characterId, @PathVariable Long comicId,
-                                @RequestBody ComicUpdateDto updateDto) {
-        return null;
-    }
-
-    @DeleteMapping("/{characterId}/comics/{comicId}")
-    public void deleteComic(@PathVariable Long characterId, @PathVariable Long comicId) {
-
+        return Optional.ofNullable(updateDto)
+                .map(characterMapper::fromUpdateDto)
+                .map(toUpdate -> characterService.updateCharacter(characterId, toUpdate))
+                .map(characterMapper::toDto)
+                .orElseThrow();
     }
 }
