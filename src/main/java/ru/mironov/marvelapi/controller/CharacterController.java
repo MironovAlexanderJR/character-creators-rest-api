@@ -9,7 +9,10 @@ import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
 import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
 import ru.mironov.marvelapi.service.CharacterService;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author mironovAlexanderJR
@@ -21,6 +24,13 @@ import java.util.Optional;
 public class CharacterController {
     private final CharacterService characterService;
     private final CharacterMapper characterMapper;
+
+    @GetMapping("/")
+    public List<CharacterDto> getAllCharacters() {
+        return characterService.getAllCharacters().stream()
+                .map(characterMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{characterId}")
     public CharacterDto getCharacter(@PathVariable Long characterId) {
@@ -39,7 +49,7 @@ public class CharacterController {
     }
 
     @PostMapping
-    public CharacterDto createCharacter(@RequestBody CharacterCreateDto createDto) {
+    public CharacterDto createCharacter(@Valid @RequestBody CharacterCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(characterMapper::fromCreateDto)
                 .map(characterService::createCharacter)
@@ -48,11 +58,16 @@ public class CharacterController {
     }
 
     @PatchMapping("/{characterId}")
-    public CharacterDto updateCharacter(@PathVariable Long characterId, @RequestBody CharacterUpdateDto updateDto) {
+    public CharacterDto updateCharacter(@PathVariable Long characterId, @Valid @RequestBody CharacterUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(characterMapper::fromUpdateDto)
                 .map(toUpdate -> characterService.updateCharacter(characterId, toUpdate))
                 .map(characterMapper::toDto)
                 .orElseThrow();
+    }
+
+    @DeleteMapping("{characterId}")
+    public void deleteCharacter(@PathVariable Long characterId) {
+        characterService.deleteCharacter(characterId);
     }
 }

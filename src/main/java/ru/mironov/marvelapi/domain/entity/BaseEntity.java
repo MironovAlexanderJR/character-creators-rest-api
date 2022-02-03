@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -23,9 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id")
     private Long id;
 
+    @Version
     private Long version;
 
     @Override

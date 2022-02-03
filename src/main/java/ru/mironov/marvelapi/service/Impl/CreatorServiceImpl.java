@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.mironov.marvelapi.domain.entity.Creator;
+import ru.mironov.marvelapi.domain.exception.creator.CreatorNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.CreatorMapper;
 import ru.mironov.marvelapi.repository.CreatorRepository;
 import ru.mironov.marvelapi.service.CreatorService;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,8 +24,14 @@ public class CreatorServiceImpl implements CreatorService {
     private final CreatorMapper creatorMapper;
 
     @Override
+    public List<Creator> getAllCreator() {
+        return creatorRepository.findAll();
+    }
+
+    @Override
     public Creator getCreator(Long creatorId) {
-        return creatorRepository.findById(creatorId).orElseThrow();
+        return creatorRepository.findById(creatorId)
+                .orElseThrow(() -> new CreatorNotFoundException(creatorId));
     }
 
     @Override
@@ -37,7 +45,7 @@ public class CreatorServiceImpl implements CreatorService {
                 .map(this::getCreator)
                 .map(current -> creatorMapper.merge(current, creatorJson))
                 .map(creatorRepository::save)
-                .orElseThrow();
+                .orElseThrow(() -> new CreatorNotFoundException(creatorId));
     }
 
     @Override

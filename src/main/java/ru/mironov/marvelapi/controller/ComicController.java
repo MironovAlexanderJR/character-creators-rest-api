@@ -9,7 +9,10 @@ import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
 import ru.mironov.marvelapi.domain.mapper.ComicMapper;
 import ru.mironov.marvelapi.service.ComicService;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author mironovAlexanderJR
@@ -21,6 +24,13 @@ import java.util.Optional;
 public class ComicController {
     private final ComicService comicService;
     private final ComicMapper comicMapper;
+
+    @GetMapping("/")
+    public List<ComicDto> getAllComic() {
+        return comicService.getAllComic().stream()
+                .map(comicMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{comicId}")
     public ComicDto getComic(@PathVariable Long comicId) {
@@ -39,7 +49,7 @@ public class ComicController {
     }
 
     @PostMapping
-    public ComicDto createComic(@RequestBody ComicCreateDto createDto) {
+    public ComicDto createComic(@Valid @RequestBody ComicCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(comicMapper::fromCreateDto)
                 .map(comicService::createComic)
@@ -48,7 +58,7 @@ public class ComicController {
     }
 
     @PatchMapping("/{comicId}")
-    public ComicDto updateComic(@PathVariable Long comicId, @RequestBody ComicUpdateDto updateDto) {
+    public ComicDto updateComic(@PathVariable Long comicId, @Valid @RequestBody ComicUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(comicMapper::fromUpdateDto)
                 .map(toUpdate -> comicService.updateComic(comicId, toUpdate))

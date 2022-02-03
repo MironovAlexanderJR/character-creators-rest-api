@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
+
 import static lombok.AccessLevel.PRIVATE;
 /**
  * @author mironovAlexanderJR
@@ -15,6 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Jacksonized
 @AllArgsConstructor(access = PRIVATE)
 public class CreatorUpdateDto {
+    @NotBlank(message = "{name.empty}")
     String name;
     String description;
 }

@@ -3,11 +3,14 @@ package ru.mironov.marvelapi.service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import ru.mironov.marvelapi.domain.entity.Character;
 import ru.mironov.marvelapi.domain.entity.Comic;
+import ru.mironov.marvelapi.domain.exception.comic.ComicNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.ComicMapper;
 import ru.mironov.marvelapi.repository.ComicRepository;
 import ru.mironov.marvelapi.service.ComicService;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,8 +25,14 @@ public class ComicServiceImpl implements ComicService {
     private final ComicMapper comicMapper;
 
     @Override
+    public List<Comic> getAllComic() {
+        return comicRepository.findAll();
+    }
+
+    @Override
     public Comic getComic(Long comicId) {
-        return comicRepository.findById(comicId).orElseThrow();
+        return comicRepository.findById(comicId)
+                .orElseThrow(() -> new ComicNotFoundException(comicId));
     }
 
     @Override
@@ -37,7 +46,7 @@ public class ComicServiceImpl implements ComicService {
                 .map(this::getComic)
                 .map(current -> comicMapper.merge(current, comicJson))
                 .map(comicRepository::save)
-                .orElseThrow();
+                .orElseThrow(() -> new ComicNotFoundException(comicId));
     }
 
     @Override

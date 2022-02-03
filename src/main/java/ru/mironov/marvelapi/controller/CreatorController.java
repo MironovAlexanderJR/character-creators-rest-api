@@ -9,7 +9,10 @@ import ru.mironov.marvelapi.domain.dto.creator.CreatorUpdateDto;
 import ru.mironov.marvelapi.domain.mapper.CreatorMapper;
 import ru.mironov.marvelapi.service.CreatorService;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author mironovAlexanderJR
@@ -21,6 +24,13 @@ import java.util.Optional;
 public class CreatorController {
     private final CreatorService creatorService;
     private final CreatorMapper creatorMapper;
+
+    @GetMapping("/")
+    public List<CreatorDto> getAllCreator() {
+        return creatorService.getAllCreator().stream()
+                .map(creatorMapper::toDto)
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("/{creatorsId}")
     public CreatorDto getCreator(@PathVariable Long creatorsId) {
@@ -39,7 +49,7 @@ public class CreatorController {
     }
 
     @PostMapping
-    public CreatorDto createCreator(@RequestBody CreatorCreateDto createDto) {
+    public CreatorDto createCreator(@Valid @RequestBody CreatorCreateDto createDto) {
         return Optional.ofNullable(createDto)
                 .map(creatorMapper::fromCreateDto)
                 .map(creatorService::createCreator)
@@ -48,7 +58,7 @@ public class CreatorController {
     }
 
     @PatchMapping("/{creatorsId}")
-    public CreatorDto updateCreator(@PathVariable Long creatorsId, @RequestBody CreatorUpdateDto updateDto) {
+    public CreatorDto updateCreator(@PathVariable Long creatorsId, @Valid @RequestBody CreatorUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(creatorMapper::fromUpdateDto)
                 .map(toUpdate -> creatorService.updateCreator(creatorsId, toUpdate))
