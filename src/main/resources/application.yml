@@ -8,9 +8,9 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/vc
-    username: miron
-    password: miron
+    url:
+    username:
+    password:
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     open-in-view: false
