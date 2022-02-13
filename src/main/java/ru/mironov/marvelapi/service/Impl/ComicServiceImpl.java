@@ -3,7 +3,7 @@ package ru.mironov.marvelapi.service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import ru.mironov.marvelapi.domain.entity.Character;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mironov.marvelapi.domain.entity.Comic;
 import ru.mironov.marvelapi.domain.exception.comic.ComicNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.ComicMapper;
@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ComicServiceImpl implements ComicService {
     private final ComicRepository comicRepository;
     private final ComicMapper comicMapper;
@@ -36,11 +37,13 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
+    @Transactional
     public Comic createComic(Comic comicJson) {
         return comicRepository.save(comicJson);
     }
 
     @Override
+    @Transactional
     public Comic updateComic(Long comicId, Comic comicJson) {
         return Optional.of(comicId)
                 .map(this::getComic)
@@ -50,6 +53,7 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
+    @Transactional
     public void deleteComic(Long comicId) {
         final Comic comic = comicRepository.findById(comicId).orElseThrow();
         comicRepository.delete(comic);

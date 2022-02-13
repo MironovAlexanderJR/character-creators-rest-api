@@ -3,8 +3,8 @@ package ru.mironov.marvelapi.service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mironov.marvelapi.domain.entity.Character;
-import ru.mironov.marvelapi.domain.exception.character.CharacterListEmptyException;
 import ru.mironov.marvelapi.domain.exception.character.CharacterNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
 import ru.mironov.marvelapi.repository.CharacterRepository;
@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CharacterServiceImpl implements CharacterService {
     private final CharacterRepository characterRepository;
     private final CharacterMapper characterMapper;
@@ -36,11 +37,13 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
+    @Transactional
     public Character createCharacter(Character characterJson) {
         return characterRepository.save(characterJson);
     }
 
     @Override
+    @Transactional
     public Character updateCharacter(Long characterId, Character characterJson) {
         return Optional.of(characterId)
                 .map(this::getCharacter)
@@ -50,6 +53,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
+    @Transactional
     public void deleteCharacter(Long characterId) {
         final Character character = characterRepository.findById(characterId).orElseThrow();
         characterRepository.delete(character);

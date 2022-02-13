@@ -3,6 +3,7 @@ package ru.mironov.marvelapi.service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mironov.marvelapi.domain.entity.Creator;
 import ru.mironov.marvelapi.domain.exception.creator.CreatorNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.CreatorMapper;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Service
 @Primary
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CreatorServiceImpl implements CreatorService {
     private final CreatorRepository creatorRepository;
     private final CreatorMapper creatorMapper;
@@ -35,11 +37,13 @@ public class CreatorServiceImpl implements CreatorService {
     }
 
     @Override
+    @Transactional
     public Creator createCreator(Creator creatorJson) {
         return creatorRepository.save(creatorJson);
     }
 
     @Override
+    @Transactional
     public Creator updateCreator(Long creatorId, Creator creatorJson) {
         return Optional.of(creatorId)
                 .map(this::getCreator)
@@ -49,6 +53,7 @@ public class CreatorServiceImpl implements CreatorService {
     }
 
     @Override
+    @Transactional
     public void deleteCreator(Long creatorId) {
         final Creator comic = creatorRepository.findById(creatorId).orElseThrow();
         creatorRepository.delete(comic);
