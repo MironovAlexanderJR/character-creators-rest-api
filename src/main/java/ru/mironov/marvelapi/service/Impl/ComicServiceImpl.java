@@ -55,7 +55,6 @@ public class ComicServiceImpl implements ComicService {
     @Override
     @Transactional
     public void deleteComic(Long comicId) {
-        final Comic comic = comicRepository.findById(comicId).orElseThrow();
-        comicRepository.delete(comic);
+        comicRepository.deleteById(comicId);
     }
 }

@@ -55,7 +55,6 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     @Transactional
     public void deleteCharacter(Long characterId) {
-        final Character character = characterRepository.findById(characterId).orElseThrow();
-        characterRepository.delete(character);
+        characterRepository.deleteById(characterId);
     }
 }
