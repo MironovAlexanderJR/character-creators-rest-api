@@ -8,6 +8,7 @@ import ru.mironov.marvelapi.domain.entity.Comic;
 import ru.mironov.marvelapi.domain.entity.Creator;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -16,23 +17,23 @@ import java.util.List;
 public interface CreatorService {
     List<Creator> getAllCreator();
 
-    Creator getCreator(Long creatorId);
+    Creator getCreator(UUID creatorId);
 
     Creator createCreator(Creator creatorJson);
 
-    Creator updateCreator(Long creatorId, Creator creatorJson);
+    Creator updateCreator(UUID creatorId, Creator creatorJson);
 
-    void deleteCreator(Long creatorId);
+    void deleteCreator(UUID creatorId);
 
-    Comic assignComic(Long creatorId, Comic comicCreateDto);
+    Comic assignComic(UUID creatorId, Comic comicCreateDto);
 
-    Comic updateComic(Long creatorsId, Long comicId, Comic comicUpdateDto);
+    Comic updateComic(UUID creatorsId, UUID comicId, Comic comicUpdateDto);
 
-    void deleteComic(Long creatorsId, Long comicId);
+    void deleteComic(UUID creatorsId, UUID comicId);
 
-    Character assignCharacter(Long creatorId, Character characterCreateDto);
+    Character assignCharacter(UUID creatorId, Character characterCreateDto);
 
-    Character updateCharacter(Long creatorsId, Long characterId, Character characterUpdateDto);
+    Character updateCharacter(UUID creatorsId, UUID characterId, Character characterUpdateDto);
 
-    void deleteCharacter(Long creatorsId, Long characterId);
+    void deleteCharacter(UUID creatorsId, UUID characterId);
 }

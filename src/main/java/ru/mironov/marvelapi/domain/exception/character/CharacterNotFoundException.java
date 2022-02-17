@@ -2,6 +2,8 @@ package ru.mironov.marvelapi.domain.exception.character;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.UUID;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -10,7 +12,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @ResponseStatus(value = NOT_FOUND)
 public class CharacterNotFoundException extends RuntimeException {
-    public CharacterNotFoundException(Long characterId) {
+    public CharacterNotFoundException(UUID characterId) {
         super("Character with id: " + characterId + " not found");
     }
 }

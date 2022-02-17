@@ -2,6 +2,8 @@ package ru.mironov.marvelapi.domain.exception.creator;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.UUID;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
@@ -10,7 +12,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
  */
 @ResponseStatus(value = NOT_FOUND)
 public class CreatorNotFoundException extends RuntimeException {
-    public CreatorNotFoundException(Long creatorId) {
+    public CreatorNotFoundException(UUID creatorId) {
         super("Comic with id: " + creatorId + " not found");
     }
 }

@@ -12,6 +12,7 @@ import ru.mironov.marvelapi.service.ComicService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +34,7 @@ public class ComicController {
     }
 
     @GetMapping("/{comicId}")
-    public ComicDto getComic(@PathVariable Long comicId) {
+    public ComicDto getComic(@PathVariable UUID comicId) {
         return Optional.of(comicId)
                 .map(comicService::getComic)
                 .map(comicMapper::toDto)
@@ -41,7 +42,7 @@ public class ComicController {
     }
 
     @GetMapping("/info/{comicId}")
-    public ComicInfoDto getCharacterInfo(@PathVariable Long comicId) {
+    public ComicInfoDto getCharacterInfo(@PathVariable UUID comicId) {
         return Optional.of(comicId)
                 .map(comicService::getComic)
                 .map(comicMapper::toInfoDto)
@@ -58,7 +59,7 @@ public class ComicController {
     }
 
     @PatchMapping("/{comicId}")
-    public ComicDto updateComic(@PathVariable Long comicId, @Valid @RequestBody ComicUpdateDto updateDto) {
+    public ComicDto updateComic(@PathVariable UUID comicId, @Valid @RequestBody ComicUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(comicMapper::fromUpdateDto)
                 .map(toUpdate -> comicService.updateComic(comicId, toUpdate))
@@ -67,7 +68,7 @@ public class ComicController {
     }
 
     @DeleteMapping("{comicId}")
-    public void deleteComic(@PathVariable Long comicId) {
+    public void deleteComic(@PathVariable UUID comicId) {
         comicService.deleteComic(comicId);
     }
 }

@@ -3,6 +3,7 @@ package ru.mironov.marvelapi.service;
 import ru.mironov.marvelapi.domain.entity.Character;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -11,11 +12,11 @@ import java.util.List;
 public interface CharacterService {
     List<Character> getAllCharacters();
 
-    Character getCharacter(Long characterId);
+    Character getCharacter(UUID characterId);
 
     Character createCharacter(Character characterJson);
 
-    Character updateCharacter(Long characterId, Character characterJson);
+    Character updateCharacter(UUID characterId, Character characterJson);
 
-    void deleteCharacter(Long characterId);
+    void deleteCharacter(UUID characterId);
 }

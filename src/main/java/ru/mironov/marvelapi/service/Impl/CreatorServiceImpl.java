@@ -16,6 +16,7 @@ import ru.mironov.marvelapi.service.CreatorService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -37,8 +38,9 @@ public class CreatorServiceImpl implements CreatorService {
     }
 
     @Override
-    public Creator getCreator(Long creatorId) {
-        return creatorRepository.getById(creatorId);
+    public Creator getCreator(UUID creatorId) {
+        return creatorRepository.findById(creatorId)
+                .orElseThrow(() -> new CreatorNotFoundException(creatorId));
     }
 
     @Override
@@ -49,7 +51,7 @@ public class CreatorServiceImpl implements CreatorService {
 
     @Override
     @Transactional
-    public Creator updateCreator(Long creatorId, Creator creatorJson) {
+    public Creator updateCreator(UUID creatorId, Creator creatorJson) {
         return Optional.of(creatorId)
                 .map(this::getCreator)
                 .map(current -> creatorMapper.merge(current, creatorJson))
@@ -59,46 +61,46 @@ public class CreatorServiceImpl implements CreatorService {
 
     @Override
     @Transactional
-    public void deleteCreator(Long creatorId) {
+    public void deleteCreator(UUID creatorId) {
         creatorRepository.deleteById(creatorId);
     }
 
     @Override
     @Transactional
-    public Comic assignComic(Long creatorId, Comic createDto) {
+    public Comic assignComic(UUID creatorId, Comic createDto) {
         creatorRepository.getById(creatorId).addComic(createDto);
         return createDto;
     }
 
     @Override
     @Transactional
-    public Comic updateComic(Long creatorsId, Long comicId, Comic comicUpdateDto) {
+    public Comic updateComic(UUID creatorsId, UUID comicId, Comic comicUpdateDto) {
         return comicService.updateComic(comicId, comicUpdateDto);
 
     }
 
     @Override
     @Transactional
-    public void deleteComic(Long creatorsId, Long comicId) {
+    public void deleteComic(UUID creatorsId, UUID comicId) {
         comicService.deleteComic(comicId);
     }
 
     @Override
     @Transactional
-    public Character assignCharacter(Long creatorId, Character characterCreateDto) {
+    public Character assignCharacter(UUID creatorId, Character characterCreateDto) {
         creatorRepository.getById(creatorId).addCharacter(characterCreateDto);
         return characterCreateDto;
     }
 
     @Override
     @Transactional
-    public Character updateCharacter(Long creatorsId, Long characterId, Character characterUpdateDto) {
+    public Character updateCharacter(UUID creatorsId, UUID characterId, Character characterUpdateDto) {
         return characterService.updateCharacter(characterId, characterUpdateDto);
     }
 
     @Override
     @Transactional
-    public void deleteCharacter(Long creatorsId, Long characterId) {
+    public void deleteCharacter(UUID creatorsId, UUID characterId) {
         characterService.deleteCharacter(characterId);
     }
 }

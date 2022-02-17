@@ -4,10 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.Objects;
+import java.util.UUID;
 
-import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -19,8 +22,8 @@ import static lombok.AccessLevel.PRIVATE;
 @Setter(value = PRIVATE)
 public abstract class BaseEntity {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id = UUID.randomUUID();
 
     @Version
     private Long version;

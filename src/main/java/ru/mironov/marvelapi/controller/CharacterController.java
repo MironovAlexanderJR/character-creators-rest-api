@@ -12,6 +12,7 @@ import ru.mironov.marvelapi.service.CharacterService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +34,7 @@ public class CharacterController {
     }
 
     @GetMapping("/{characterId}")
-    public CharacterDto getCharacter(@PathVariable Long characterId) {
+    public CharacterDto getCharacter(@PathVariable UUID characterId) {
         return Optional.of(characterId)
                 .map(characterService::getCharacter)
                 .map(characterMapper::toDto)
@@ -41,7 +42,7 @@ public class CharacterController {
     }
 
     @GetMapping("/info/{characterId}")
-    public CharacterInfoDto getCharacterInfo(@PathVariable Long characterId) {
+    public CharacterInfoDto getCharacterInfo(@PathVariable UUID characterId) {
         return Optional.of(characterId)
                 .map(characterService::getCharacter)
                 .map(characterMapper::toInfoDto)
@@ -58,7 +59,7 @@ public class CharacterController {
     }
 
     @PatchMapping("/{characterId}")
-    public CharacterDto updateCharacter(@PathVariable Long characterId, @Valid @RequestBody CharacterUpdateDto updateDto) {
+    public CharacterDto updateCharacter(@PathVariable UUID characterId, @Valid @RequestBody CharacterUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(characterMapper::fromUpdateDto)
                 .map(toUpdate -> characterService.updateCharacter(characterId, toUpdate))
@@ -67,7 +68,7 @@ public class CharacterController {
     }
 
     @DeleteMapping("{characterId}")
-    public void deleteCharacter(@PathVariable Long characterId) {
+    public void deleteCharacter(@PathVariable UUID characterId) {
         characterService.deleteCharacter(characterId);
     }
 }

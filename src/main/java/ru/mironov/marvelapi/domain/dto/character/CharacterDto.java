@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import java.util.UUID;
+
 import static lombok.AccessLevel.PRIVATE;
 
 /**
@@ -17,7 +19,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Jacksonized
 @AllArgsConstructor(access = PRIVATE)
 public class CharacterDto {
-    Long id;
+    UUID id;
     String name;
     String description;
 }

@@ -12,6 +12,7 @@ import ru.mironov.marvelapi.service.CharacterService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -31,7 +32,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public Character getCharacter(Long characterId) {
+    public Character getCharacter(UUID characterId) {
         return characterRepository.findById(characterId)
                 .orElseThrow(() -> new CharacterNotFoundException(characterId));
     }
@@ -44,7 +45,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     @Transactional
-    public Character updateCharacter(Long characterId, Character characterJson) {
+    public Character updateCharacter(UUID characterId, Character characterJson) {
         return Optional.of(characterId)
                 .map(this::getCharacter)
                 .map(current -> characterMapper.merge(current, characterJson))
@@ -54,7 +55,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     @Transactional
-    public void deleteCharacter(Long characterId) {
+    public void deleteCharacter(UUID characterId) {
         characterRepository.deleteById(characterId);
     }
 }

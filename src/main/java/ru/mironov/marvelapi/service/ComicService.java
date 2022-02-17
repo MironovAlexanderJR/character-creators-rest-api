@@ -4,6 +4,7 @@ import ru.mironov.marvelapi.domain.entity.Character;
 import ru.mironov.marvelapi.domain.entity.Comic;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -12,11 +13,11 @@ import java.util.List;
 public interface ComicService {
     List<Comic> getAllComic();
 
-    Comic getComic(Long comicId);
+    Comic getComic(UUID comicId);
 
     Comic createComic(Comic comicJson);
 
-    Comic updateComic(Long comicId, Comic comicJson);
+    Comic updateComic(UUID comicId, Comic comicJson);
 
-    void deleteComic(Long comicId);
+    void deleteComic(UUID comicId);
 }

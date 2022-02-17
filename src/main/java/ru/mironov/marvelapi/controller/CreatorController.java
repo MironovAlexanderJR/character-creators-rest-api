@@ -20,6 +20,7 @@ import ru.mironov.marvelapi.service.CreatorService;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -42,17 +43,17 @@ public class CreatorController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{creatorsId}")
-    public CreatorDto getCreator(@PathVariable Long creatorsId) {
-        return Optional.of(creatorsId)
+    @GetMapping("/{creatorId}")
+    public CreatorDto getCreator(@PathVariable UUID creatorId) {
+        return Optional.of(creatorId)
                 .map(creatorService::getCreator)
                 .map(creatorMapper::toDto)
                 .orElseThrow();
     }
 
-    @GetMapping("/info/{creatorsId}")
-    public CreatorInfoDto getCreatorInfo(@PathVariable Long creatorsId) {
-        return Optional.of(creatorsId)
+    @GetMapping("/info/{creatorId}")
+    public CreatorInfoDto getCreatorInfo(@PathVariable UUID creatorId) {
+        return Optional.of(creatorId)
                 .map(creatorService::getCreator)
                 .map(creatorMapper::toInfoDto)
                 .orElseThrow();
@@ -67,49 +68,49 @@ public class CreatorController {
                 .orElseThrow();
     }
 
-    @PatchMapping("/{creatorsId}")
-    public CreatorDto updateCreator(@PathVariable Long creatorsId, @Valid @RequestBody CreatorUpdateDto updateDto) {
+    @PatchMapping("/{creatorId}")
+    public CreatorDto updateCreator(@PathVariable UUID creatorId, @Valid @RequestBody CreatorUpdateDto updateDto) {
         return Optional.ofNullable(updateDto)
                 .map(creatorMapper::fromUpdateDto)
-                .map(toUpdate -> creatorService.updateCreator(creatorsId, toUpdate))
+                .map(toUpdate -> creatorService.updateCreator(creatorId, toUpdate))
                 .map(creatorMapper::toDto)
                 .orElseThrow();
     }
 
-    @DeleteMapping("{creatorsId}")
-    public void deleteCreator(@PathVariable Long creatorsId) {
-        creatorService.deleteCreator(creatorsId);
+    @DeleteMapping("{creatorId}")
+    public void deleteCreator(@PathVariable UUID creatorId) {
+        creatorService.deleteCreator(creatorId);
     }
 
-    @PostMapping("/{creatorsId}/characters")
-    public CharacterDto assignCharacter(@PathVariable Long creatorsId, @RequestBody CharacterCreateDto characterCreateDto) {
-        return characterMapper.toDto(creatorService.assignCharacter(creatorsId, characterMapper.fromCreateDto(characterCreateDto)));
+    @PostMapping("/{creatorId}/characters")
+    public CharacterDto assignCharacter(@PathVariable UUID creatorId, @RequestBody CharacterCreateDto characterCreateDto) {
+        return characterMapper.toDto(creatorService.assignCharacter(creatorId, characterMapper.fromCreateDto(characterCreateDto)));
     }
 
-    @PatchMapping("/{creatorsId}/characters/{characterId}")
-    public CharacterDto updateCharacter(@PathVariable Long creatorsId, @PathVariable Long characterId,
+    @PatchMapping("/{creatorId}/characters/{characterId}")
+    public CharacterDto updateCharacter(@PathVariable UUID creatorId, @PathVariable UUID characterId,
                                         @RequestBody CharacterUpdateDto characterUpdateDto) {
-        return characterMapper.toDto(creatorService.updateCharacter(creatorsId, characterId, characterMapper.fromUpdateDto(characterUpdateDto)));
+        return characterMapper.toDto(creatorService.updateCharacter(creatorId, characterId, characterMapper.fromUpdateDto(characterUpdateDto)));
     }
 
-    @DeleteMapping("/{creatorsId}/characters/{characterId}")
-    public void deleteCharacter(@PathVariable Long creatorsId, @PathVariable Long characterId) {
-        creatorService.deleteCharacter(creatorsId, characterId);
+    @DeleteMapping("/{creatorId}/characters/{characterId}")
+    public void deleteCharacter(@PathVariable UUID creatorId, @PathVariable UUID characterId) {
+        creatorService.deleteCharacter(creatorId, characterId);
     }
 
-    @PostMapping("/{creatorsId}/comics")
-    public ComicDto assignComic(@PathVariable Long creatorsId, @RequestBody ComicCreateDto comicCreateDto) {
-        return comicMapper.toDto(creatorService.assignComic(creatorsId, comicMapper.fromCreateDto(comicCreateDto)));
+    @PostMapping("/{creatorId}/comics")
+    public ComicDto assignComic(@PathVariable UUID creatorId, @RequestBody ComicCreateDto comicCreateDto) {
+        return comicMapper.toDto(creatorService.assignComic(creatorId, comicMapper.fromCreateDto(comicCreateDto)));
     }
 
-    @PatchMapping("/{creatorsId}/comics/{comicId}")
-    public ComicDto updateComic(@PathVariable Long creatorsId, @PathVariable Long comicId,
+    @PatchMapping("/{creatorId}/comics/{comicId}")
+    public ComicDto updateComic(@PathVariable UUID creatorId, @PathVariable UUID comicId,
                                 @RequestBody ComicUpdateDto comicUpdateDto) {
-        return comicMapper.toDto(creatorService.updateComic(creatorsId, comicId, comicMapper.fromUpdateDto(comicUpdateDto)));
+        return comicMapper.toDto(creatorService.updateComic(creatorId, comicId, comicMapper.fromUpdateDto(comicUpdateDto)));
     }
 
-    @DeleteMapping("/{creatorsId}/comics/{comicId}")
-    public void deleteComic(@PathVariable Long creatorsId, @PathVariable Long comicId) {
-        creatorService.deleteComic(creatorsId, comicId);
+    @DeleteMapping("/{creatorId}/comics/{comicId}")
+    public void deleteComic(@PathVariable UUID creatorId, @PathVariable UUID comicId) {
+        creatorService.deleteComic(creatorId, comicId);
     }
 }

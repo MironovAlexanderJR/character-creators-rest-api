@@ -12,6 +12,7 @@ import ru.mironov.marvelapi.service.ComicService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -31,7 +32,7 @@ public class ComicServiceImpl implements ComicService {
     }
 
     @Override
-    public Comic getComic(Long comicId) {
+    public Comic getComic(UUID comicId) {
         return comicRepository.findById(comicId)
                 .orElseThrow(() -> new ComicNotFoundException(comicId));
     }
@@ -44,7 +45,7 @@ public class ComicServiceImpl implements ComicService {
 
     @Override
     @Transactional
-    public Comic updateComic(Long comicId, Comic comicJson) {
+    public Comic updateComic(UUID comicId, Comic comicJson) {
         return Optional.of(comicId)
                 .map(this::getComic)
                 .map(current -> comicMapper.merge(current, comicJson))
@@ -54,7 +55,7 @@ public class ComicServiceImpl implements ComicService {
 
     @Override
     @Transactional
-    public void deleteComic(Long comicId) {
+    public void deleteComic(UUID comicId) {
         comicRepository.deleteById(comicId);
     }
 }

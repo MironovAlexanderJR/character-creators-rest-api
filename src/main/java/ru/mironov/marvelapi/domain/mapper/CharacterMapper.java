@@ -19,8 +19,12 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper
 public interface CharacterMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "comics", ignore = true)
+    @Mapping(target = "creators", ignore = true)
     Character fromCreateDto(CharacterCreateDto source);
 
+    @Mapping(target = "comics", ignore = true)
+    @Mapping(target = "creators", ignore = true)
     Character fromUpdateDto(CharacterUpdateDto source);
 
     CharacterDto toDto(Character source);
