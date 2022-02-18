@@ -19,6 +19,7 @@ import java.util.Set;
 public class Creator extends BaseEntity{
     private String name;
     private String description;
+    private String imageUrl = "no photo";
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "characters_creator",

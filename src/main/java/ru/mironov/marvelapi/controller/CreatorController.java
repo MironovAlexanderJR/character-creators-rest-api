@@ -2,6 +2,7 @@ package ru.mironov.marvelapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
@@ -12,6 +13,7 @@ import ru.mironov.marvelapi.domain.dto.creator.CreatorCreateDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorInfoDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorUpdateDto;
+import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
 import ru.mironov.marvelapi.domain.mapper.ComicMapper;
 import ru.mironov.marvelapi.domain.mapper.CreatorMapper;
@@ -112,5 +114,15 @@ public class CreatorController {
     @DeleteMapping("/{creatorId}/comics/{comicId}")
     public void deleteComic(@PathVariable UUID creatorId, @PathVariable UUID comicId) {
         creatorService.deleteComic(creatorId, comicId);
+    }
+
+    @PostMapping("/{creatorId}/images")
+    public ImageDto uploadImage(@PathVariable UUID creatorId, @RequestParam MultipartFile image) {
+        return creatorService.uploadImage(creatorId, image);
+    }
+
+    @DeleteMapping("{creatorId}/images/{imageId}")
+    public void deleteImage(@PathVariable UUID creatorId, @PathVariable UUID imageId) {
+        creatorService.deleteImage(creatorId, imageId);
     }
 }

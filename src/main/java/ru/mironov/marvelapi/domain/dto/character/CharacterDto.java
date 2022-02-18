@@ -22,4 +22,5 @@ public class CharacterDto {
     UUID id;
     String name;
     String description;
+    String imageUrl;
 }

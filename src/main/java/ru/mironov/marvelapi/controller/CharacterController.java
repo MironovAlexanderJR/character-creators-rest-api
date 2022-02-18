@@ -2,10 +2,12 @@ package ru.mironov.marvelapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterInfoDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
+import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
 import ru.mironov.marvelapi.service.CharacterService;
 
@@ -70,5 +72,15 @@ public class CharacterController {
     @DeleteMapping("{characterId}")
     public void deleteCharacter(@PathVariable UUID characterId) {
         characterService.deleteCharacter(characterId);
+    }
+
+    @PostMapping("/{characterId}/images")
+    public ImageDto uploadImage(@PathVariable UUID characterId, @RequestParam MultipartFile image) {
+        return characterService.uploadImage(characterId, image);
+    }
+
+    @DeleteMapping("{characterId}/images/{imageId}")
+    public void deleteImage(@PathVariable UUID characterId, @PathVariable UUID imageId) {
+        characterService.deleteImage(characterId, imageId);
     }
 }

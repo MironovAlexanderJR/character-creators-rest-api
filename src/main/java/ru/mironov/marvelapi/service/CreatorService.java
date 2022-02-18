@@ -2,7 +2,9 @@ package ru.mironov.marvelapi.service;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
+import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.entity.Character;
 import ru.mironov.marvelapi.domain.entity.Comic;
 import ru.mironov.marvelapi.domain.entity.Creator;
@@ -36,4 +38,8 @@ public interface CreatorService {
     Character updateCharacter(UUID creatorsId, UUID characterId, Character characterUpdateDto);
 
     void deleteCharacter(UUID creatorsId, UUID characterId);
+
+    ImageDto uploadImage(UUID creatorsId, MultipartFile image);
+
+    void deleteImage(UUID creatorId, UUID imageId);
 }

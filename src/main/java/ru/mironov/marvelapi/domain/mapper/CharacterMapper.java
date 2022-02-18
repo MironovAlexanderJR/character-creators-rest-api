@@ -21,15 +21,23 @@ public interface CharacterMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comics", ignore = true)
     @Mapping(target = "creators", ignore = true)
+    @Mapping(target = "imageUrl", ignore = true)
     Character fromCreateDto(CharacterCreateDto source);
 
     @Mapping(target = "comics", ignore = true)
     @Mapping(target = "creators", ignore = true)
+    @Mapping(target = "imageUrl", ignore = true)
     Character fromUpdateDto(CharacterUpdateDto source);
+
+    @Mapping(target = "comics", ignore = true)
+    @Mapping(target = "creators", ignore = true)
+    Character fromDto(CharacterDto source);
 
     CharacterDto toDto(Character source);
 
     CharacterInfoDto toInfoDto(Character source);
+
+    CharacterUpdateDto toUpdateDto(Character character);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Character merge(@MappingTarget Character target, Character source);

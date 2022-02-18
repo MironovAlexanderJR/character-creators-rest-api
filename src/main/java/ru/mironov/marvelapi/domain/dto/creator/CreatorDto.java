@@ -21,4 +21,5 @@ public class CreatorDto {
     UUID id;
     String name;
     String description;
+    String imageUrl;
 }
