@@ -38,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional
     public Image uploadAndUpdateImage(UUID authorId, MultipartFile image) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 

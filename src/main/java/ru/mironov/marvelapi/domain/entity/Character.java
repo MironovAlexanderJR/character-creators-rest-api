@@ -19,7 +19,7 @@ import java.util.Set;
 public class Character extends BaseEntity {
     private String name;
     private String description;
-    private String imageUrl = "no photo";
+    private String imageUrl;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "characters_comics",

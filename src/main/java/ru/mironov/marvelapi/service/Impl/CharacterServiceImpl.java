@@ -72,7 +72,7 @@ public class CharacterServiceImpl implements CharacterService {
         Image uploadImage = imageService.uploadAndUpdateImage(characterId, image);
         Character character = getCharacter(characterId);
         character.setImageUrl(uploadImage.getFileDownloadUri());
-        updateCharacter(characterId, character);
+        characterRepository.save(character);
 
         return imageMapper.toDto(uploadImage);
     }
