@@ -1,23 +1,28 @@
 package ru.mironov.marvelapi.service.Impl;
 
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.mironov.marvelapi.domain.dto.comic.ComicCreateDto;
+import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
+import ru.mironov.marvelapi.domain.dto.comic.ComicInfoDto;
+import ru.mironov.marvelapi.domain.dto.comic.ComicUpdateDto;
 import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.entity.Comic;
-import ru.mironov.marvelapi.domain.entity.Image;
-import ru.mironov.marvelapi.domain.exception.comic.ComicNotFoundException;
+import ru.mironov.marvelapi.domain.exception.character.CharacterNotFoundException;
 import ru.mironov.marvelapi.domain.mapper.ComicMapper;
-import ru.mironov.marvelapi.domain.mapper.ImageMapper;
 import ru.mironov.marvelapi.repository.ComicRepository;
 import ru.mironov.marvelapi.service.ComicService;
 import ru.mironov.marvelapi.service.ImageService;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -31,33 +36,60 @@ public class ComicServiceImpl implements ComicService {
     private final ImageService imageService;
     private final ComicRepository comicRepository;
     private final ComicMapper comicMapper;
-    private final ImageMapper imageMapper;
 
     @Override
-    public List<Comic> getAllComic() {
-        return comicRepository.findAll();
+    public Page<ComicDto> getAllComics(Pageable pageable) {
+        return new PageImpl<>(comicRepository.findAll(pageable).stream()
+                .map(comicMapper::toDto)
+                .collect(Collectors.toList()));
     }
 
     @Override
-    public Comic getComic(UUID comicId) {
-        return comicRepository.findById(comicId)
-                .orElseThrow(() -> new ComicNotFoundException(comicId));
+    public ComicDto getAndInitializeComic(UUID comicId) {
+        ComicDto comicDto = Optional.of(comicId)
+                .map(comicRepository::getById)
+                .map(comicMapper::toDto)
+                .orElseThrow(() -> new CharacterNotFoundException(comicId));
+
+        Hibernate.initialize(comicDto);
+
+        return comicDto;
     }
 
     @Override
-    @Transactional
-    public Comic createComic(Comic comicJson) {
-        return comicRepository.save(comicJson);
+    public Comic localMethodGetComicById(UUID comicId) {
+        return comicRepository.getById(comicId);
     }
 
     @Override
-    @Transactional
-    public Comic updateComic(UUID comicId, Comic comicJson) {
+    public ComicInfoDto getComicInfo(UUID comicId) {
         return Optional.of(comicId)
-                .map(this::getComic)
-                .map(current -> comicMapper.merge(current, comicJson))
+                .map(comicRepository::getById)
+                .map(comicMapper::toInfoDto)
+                .orElseThrow(() -> new CharacterNotFoundException(comicId));
+    }
+
+    @Override
+    @Transactional
+    public ComicDto createComic(ComicCreateDto comicCreateDto) {
+        return Optional.of(comicCreateDto)
+                .map(comicMapper::fromCreateDto)
                 .map(comicRepository::save)
-                .orElseThrow(() -> new ComicNotFoundException(comicId));
+                .map(comicMapper::toDto)
+                .orElseThrow();
+    }
+
+    @Override
+    @Transactional
+    public ComicDto updateComic(UUID comicId, ComicUpdateDto comicUpdateDto) {
+        Comic comic = localMethodGetComicById(comicId);
+
+        return Optional.ofNullable(comicUpdateDto)
+                .map(comicMapper::fromUpdateDto)
+                .map(toUpdate -> comicMapper.merge(comic, toUpdate))
+                .map(comicRepository::save)
+                .map(comicMapper::toDto)
+                .orElseThrow();
     }
 
     @Override
@@ -69,18 +101,18 @@ public class ComicServiceImpl implements ComicService {
     @Override
     @Transactional
     public ImageDto uploadImage(UUID comicId, MultipartFile image) {
-        Image uploadImage = imageService.uploadAndUpdateImage(comicId, image);
-        Comic comic = getComic(comicId);
-        comic.setImageUrl(uploadImage.getFileDownloadUri());
-        updateComic(comicId, comic);
+        ImageDto imageDto = imageService.uploadAndUpdateImage(comicId, image);
+        Comic comic = localMethodGetComicById(comicId);
+        comic.setImageDownloadUrl(imageDto.getImageDownloadUrl());
+        comicRepository.save(comic);
 
-        return imageMapper.toDto(uploadImage);
+        return imageDto;
     }
 
     @Override
     @Transactional
     public void deleteImage(UUID comicId, UUID imageId) {
         imageService.deleteImage(imageId);
-        getComic(comicId).setImageUrl("no image");
+        localMethodGetComicById(comicId).setImageDownloadUrl("no image");
     }
 }

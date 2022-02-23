@@ -1,12 +1,14 @@
 package ru.mironov.marvelapi.domain.entity;
 
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author mironovAlexanderJR
@@ -19,7 +21,7 @@ import java.util.Set;
 public class Comic extends BaseEntity {
     private String name;
     private String description;
-    private String imageUrl;
+    private String imageDownloadUrl;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "characters_comics",

@@ -1,11 +1,10 @@
 package ru.mironov.marvelapi.domain.dto.character;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,5 +21,5 @@ public class CharacterDto {
     UUID id;
     String name;
     String description;
-    String imageUrl;
+    String imageDownloadUrl;
 }

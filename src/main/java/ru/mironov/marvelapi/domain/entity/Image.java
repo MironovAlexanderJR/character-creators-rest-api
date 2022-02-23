@@ -1,11 +1,14 @@
 package ru.mironov.marvelapi.domain.entity;
 
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -33,8 +36,6 @@ public class Image {
 
     @Column(columnDefinition = "varchar(36)")
     private String authorId;
-
-    private String fileDownloadUri;
 
     public Image(String fileName, String fileType, long size, byte[] data, String authorId) {
         this.fileName = fileName;

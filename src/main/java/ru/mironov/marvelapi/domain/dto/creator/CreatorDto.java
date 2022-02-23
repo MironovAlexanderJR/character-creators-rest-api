@@ -1,11 +1,13 @@
 package ru.mironov.marvelapi.domain.dto.creator;
 
+import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
-
-import java.util.UUID;
+import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
+import ru.mironov.marvelapi.domain.dto.comic.ComicDto;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -21,5 +23,7 @@ public class CreatorDto {
     UUID id;
     String name;
     String description;
-    String imageUrl;
+    String imageDownloadUrl;
+    Set<CharacterDto> characters;
+    Set<ComicDto> comics;
 }

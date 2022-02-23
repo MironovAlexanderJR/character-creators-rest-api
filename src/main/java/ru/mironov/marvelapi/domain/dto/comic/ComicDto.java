@@ -21,5 +21,5 @@ public class ComicDto {
     UUID id;
     String name;
     String description;
-    String imageUrl;
+    String imageDownloadUrl;
 }

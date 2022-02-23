@@ -21,12 +21,12 @@ public interface ComicMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "characters", ignore = true)
     @Mapping(target = "creators", ignore = true)
-    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "imageDownloadUrl", ignore = true)
     Comic fromCreateDto(ComicCreateDto source);
 
     @Mapping(target = "characters", ignore = true)
     @Mapping(target = "creators", ignore = true)
-    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "imageDownloadUrl", ignore = true)
     Comic fromUpdateDto(ComicUpdateDto source);
 
     ComicDto toDto(Comic source);

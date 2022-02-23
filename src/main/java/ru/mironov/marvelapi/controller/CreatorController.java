@@ -1,7 +1,19 @@
 package ru.mironov.marvelapi.controller;
 
+import java.util.UUID;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
 import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
@@ -14,16 +26,7 @@ import ru.mironov.marvelapi.domain.dto.creator.CreatorDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorInfoDto;
 import ru.mironov.marvelapi.domain.dto.creator.CreatorUpdateDto;
 import ru.mironov.marvelapi.domain.dto.file.ImageDto;
-import ru.mironov.marvelapi.domain.mapper.CharacterMapper;
-import ru.mironov.marvelapi.domain.mapper.ComicMapper;
-import ru.mironov.marvelapi.domain.mapper.CreatorMapper;
 import ru.mironov.marvelapi.service.CreatorService;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * @author mironovAlexanderJR
@@ -34,49 +37,31 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "creators")
 public class CreatorController {
     private final CreatorService creatorService;
-    private final CreatorMapper creatorMapper;
-    private final ComicMapper comicMapper;
-    private final CharacterMapper characterMapper;
 
     @GetMapping("/")
-    public List<CreatorDto> getAllCreator() {
-        return creatorService.getAllCreator().stream()
-                .map(creatorMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<CreatorDto> getAllCreator(Pageable pageable) {
+        return creatorService.getAllCreator(pageable);
     }
 
     @GetMapping("/{creatorId}")
     public CreatorDto getCreator(@PathVariable UUID creatorId) {
-        return Optional.of(creatorId)
-                .map(creatorService::getCreator)
-                .map(creatorMapper::toDto)
-                .orElseThrow();
+        return creatorService.getAndInitializeCreator(creatorId);
     }
 
     @GetMapping("/info/{creatorId}")
     public CreatorInfoDto getCreatorInfo(@PathVariable UUID creatorId) {
-        return Optional.of(creatorId)
-                .map(creatorService::getCreator)
-                .map(creatorMapper::toInfoDto)
-                .orElseThrow();
+        return creatorService.getCreatorInfo(creatorId);
     }
 
     @PostMapping
     public CreatorDto createCreator(@Valid @RequestBody CreatorCreateDto createDto) {
-        return Optional.ofNullable(createDto)
-                .map(creatorMapper::fromCreateDto)
-                .map(creatorService::createCreator)
-                .map(creatorMapper::toDto)
-                .orElseThrow();
+        return creatorService.createCreator(createDto);
     }
 
     @PatchMapping("/{creatorId}")
-    public CreatorDto updateCreator(@PathVariable UUID creatorId, @Valid @RequestBody CreatorUpdateDto updateDto) {
-        return Optional.ofNullable(updateDto)
-                .map(creatorMapper::fromUpdateDto)
-                .map(toUpdate -> creatorService.updateCreator(creatorId, toUpdate))
-                .map(creatorMapper::toDto)
-                .orElseThrow();
+    public CreatorDto updateCreator(@PathVariable UUID creatorId,
+                                    @Valid @RequestBody CreatorUpdateDto creatorUpdateDto) {
+        return creatorService.updateCreator(creatorId, creatorUpdateDto);
     }
 
     @DeleteMapping("{creatorId}")
@@ -85,14 +70,15 @@ public class CreatorController {
     }
 
     @PostMapping("/{creatorId}/characters")
-    public CharacterDto assignCharacter(@PathVariable UUID creatorId, @RequestBody CharacterCreateDto characterCreateDto) {
-        return characterMapper.toDto(creatorService.assignCharacter(creatorId, characterMapper.fromCreateDto(characterCreateDto)));
+    public CharacterDto assignCharacter(@PathVariable UUID creatorId,
+                                        @RequestBody CharacterCreateDto characterCreateDto) {
+        return creatorService.assignCharacter(creatorId, characterCreateDto);
     }
 
     @PatchMapping("/{creatorId}/characters/{characterId}")
     public CharacterDto updateCharacter(@PathVariable UUID creatorId, @PathVariable UUID characterId,
                                         @RequestBody CharacterUpdateDto characterUpdateDto) {
-        return characterMapper.toDto(creatorService.updateCharacter(creatorId, characterId, characterMapper.fromUpdateDto(characterUpdateDto)));
+        return creatorService.updateCharacter(creatorId, characterId, characterUpdateDto);
     }
 
     @DeleteMapping("/{creatorId}/characters/{characterId}")
@@ -102,13 +88,13 @@ public class CreatorController {
 
     @PostMapping("/{creatorId}/comics")
     public ComicDto assignComic(@PathVariable UUID creatorId, @RequestBody ComicCreateDto comicCreateDto) {
-        return comicMapper.toDto(creatorService.assignComic(creatorId, comicMapper.fromCreateDto(comicCreateDto)));
+        return creatorService.assignComic(creatorId, comicCreateDto);
     }
 
     @PatchMapping("/{creatorId}/comics/{comicId}")
     public ComicDto updateComic(@PathVariable UUID creatorId, @PathVariable UUID comicId,
                                 @RequestBody ComicUpdateDto comicUpdateDto) {
-        return comicMapper.toDto(creatorService.updateComic(creatorId, comicId, comicMapper.fromUpdateDto(comicUpdateDto)));
+        return creatorService.updateComic(creatorId, comicId, comicUpdateDto);
     }
 
     @DeleteMapping("/{creatorId}/comics/{comicId}")

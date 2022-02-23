@@ -1,9 +1,8 @@
 package ru.mironov.marvelapi.domain.dto.file;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
@@ -16,4 +15,5 @@ public class ImageDto {
     private String fileName;
     private String fileType;
     private long size;
+    private String imageDownloadUrl;
 }

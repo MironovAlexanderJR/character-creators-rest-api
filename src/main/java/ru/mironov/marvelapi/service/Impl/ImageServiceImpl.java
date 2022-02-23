@@ -8,10 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.entity.Image;
 import ru.mironov.marvelapi.domain.exception.image.ImageNotFoundException;
 import ru.mironov.marvelapi.domain.exception.image.ImageStorageException;
 import ru.mironov.marvelapi.domain.exception.image.ImageTypeException;
+import ru.mironov.marvelapi.domain.mapper.ImageMapper;
 import ru.mironov.marvelapi.repository.FileRepository;
 import ru.mironov.marvelapi.service.ImageService;
 
@@ -30,6 +32,7 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
 
     private final FileRepository fileRepository;
+    private final ImageMapper imageMapper;
 
     @Override
     public Image getImage(UUID fileId) {
@@ -38,8 +41,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    @Transactional
-    public Image uploadAndUpdateImage(UUID authorId, MultipartFile image) {
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ImageDto uploadAndUpdateImage(UUID authorId, MultipartFile image) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
 
         try {
@@ -56,14 +59,16 @@ public class ImageServiceImpl implements ImageService {
 
             fileRepository.save(dbImage);
 
+            ImageDto imageDto = imageMapper.toDto(dbImage);
+
             String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path("/images/")
                     .path(dbImage.getId().toString())
                     .toUriString();
 
-            dbImage.setFileDownloadUri(fileDownloadUri);
+            imageDto.setImageDownloadUrl(fileDownloadUri);
 
-            return dbImage;
+            return imageDto;
 
         } catch (IOException ex) {
             throw new ImageStorageException(fileName);

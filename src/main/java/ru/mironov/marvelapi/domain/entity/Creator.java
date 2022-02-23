@@ -16,22 +16,22 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "creators")
-public class Creator extends BaseEntity{
+public class Creator extends BaseEntity {
     private String name;
     private String description;
-    private String imageUrl;
+    private String imageDownloadUrl;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "characters_creator",
             joinColumns = @JoinColumn(name = "creator_id"),
             inverseJoinColumns = @JoinColumn(name = "character_id"))
-    private Set<Character> characters = new HashSet<>();
+    private Set<Character> characters;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "comic_creator",
             joinColumns = @JoinColumn(name = "creator_id"),
             inverseJoinColumns = @JoinColumn(name = "comic_id"))
-    private Set<Comic> comics = new HashSet<>();
+    private Set<Comic> comics;
 
     public void addCharacter(Character character) {
         this.characters.add(character);

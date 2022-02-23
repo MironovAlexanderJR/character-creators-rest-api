@@ -1,24 +1,32 @@
 package ru.mironov.marvelapi.service;
 
+import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import ru.mironov.marvelapi.domain.dto.character.CharacterCreateDto;
+import ru.mironov.marvelapi.domain.dto.character.CharacterDto;
+import ru.mironov.marvelapi.domain.dto.character.CharacterInfoDto;
+import ru.mironov.marvelapi.domain.dto.character.CharacterUpdateDto;
 import ru.mironov.marvelapi.domain.dto.file.ImageDto;
 import ru.mironov.marvelapi.domain.entity.Character;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author mironovAlexanderJR
  * @since 27.01.2022
  */
 public interface CharacterService {
-    List<Character> getAllCharacters();
+    Page<CharacterDto> getAllCharacters(Pageable pageable);
 
-    Character getCharacter(UUID characterId);
+    CharacterDto getAndInitializeCharacter(UUID characterId);
 
-    Character createCharacter(Character characterJson);
+    Character localMethodGetCreatorById(UUID creatorId);
 
-    Character updateCharacter(UUID characterId, Character characterJson);
+    CharacterInfoDto getCharacterInfo(UUID characterId);
+
+    CharacterDto createCharacter(CharacterCreateDto characterCreateDto);
+
+    CharacterDto updateCharacter(UUID characterId, CharacterUpdateDto characterUpdateDto);
 
     void deleteCharacter(UUID characterId);
 

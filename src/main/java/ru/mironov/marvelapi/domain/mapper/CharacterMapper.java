@@ -21,12 +21,12 @@ public interface CharacterMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comics", ignore = true)
     @Mapping(target = "creators", ignore = true)
-    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "imageDownloadUrl", ignore = true)
     Character fromCreateDto(CharacterCreateDto source);
 
     @Mapping(target = "comics", ignore = true)
     @Mapping(target = "creators", ignore = true)
-    @Mapping(target = "imageUrl", ignore = true)
+    @Mapping(target = "imageDownloadUrl", ignore = true)
     Character fromUpdateDto(CharacterUpdateDto source);
 
     @Mapping(target = "comics", ignore = true)
