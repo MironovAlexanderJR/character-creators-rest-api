@@ -1,0 +1,26 @@
+server:
+  error:
+    include-message: always
+    include-exception: true
+    include-binding-errors: always
+  servlet:
+    context-path: /api/v1.0
+  port: 8086
+spring:
+  profiles:
+    active: TEST
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true  #Property for show real SQL query
