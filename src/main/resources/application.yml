@@ -8,13 +8,13 @@ server:
   port: 8080
 spring:
   datasource:
-    url:
-    username:
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/vc}
+    username: ${SPRING_DATASOURCE_USERNAME:miron}
+    password: ${SPRING_DATASOURCE_PASSWORD:miron}
+    driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     hibernate:
       ddl-auto: create-drop
     show-sql: true
